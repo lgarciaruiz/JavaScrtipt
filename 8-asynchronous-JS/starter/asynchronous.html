@@ -9,7 +9,497 @@
 <body>
     <h1>Asynchronous JavaScript</h1>
     <script>
-        
+        // /**
+        //  * Synchronous javascript is javascript instructions that runs in order, line by line one by one in the order that the code was written
+        // */
+
+        // //START SYNCHRONOUS JAVASCRIPT EXAMPLE CODE
+        // const second = () => {
+        //     console.log('second');
+            
+        // }
+        // const first = () => {
+        //     console.log('Hey There');
+        //     second();
+        //     console.log('The End');
+        // }
+
+        // first();
+        // //END SYNCHRONOUS JAVASCRIPT EXAMPLE CODE
+
+        // /**
+        //  * Asynchronous javascript is javascript that runs while other javascript code is running or at a later time by using a timer
+        //  * 
+        // */
+        // //START ASYNCHRONOUS JAVASCRIPT EXAMPLE CODE
+        // const secondAsynch = () => {
+        //     //setTimeout method is a function where you can pass a callback function and the time in miliseconds for when you want the callback function to run; setTimout(callbackFunc,time);
+        //     setTimeout(() => {
+        //         console.log('two seconds (2000 miliseconds) have passed!!');
+                
+        //     },2000)            
+        // }
+        // const firstAsynch = () => {
+        //     //this code will run
+        //     console.log('Hey There Asynch');
+        //     //function will get called and start the timer; function will run after the timer has reached 0
+        //     secondAsynch();
+        //     //this code will run even if the function above has not yet run or completed
+        //     console.log('The End Asynch');
+        // }
+        // firstAsynch();
+        // //START ASYNCHRONOUS JAVASCRIPT EXAMPLE CODE
+
+        /**
+         * Asynchronous javascript notes
+         * - Allows asynchronous functions to run in the background
+         * - we pass in callbacks that run once the funcion has finished its work;
+         * - Move on immediately; Non-blocking - this means the code will keep on processin in a synchronous way line by line and once the callback is finished it will do it's function
+         * 
+         * example of another asynchronous piece of code:
+         * const image = document.getElementById('img').src;
+         * processLargeImage(image, ()=> {
+         *  console.log('Image processed!');
+         * })
+         * 
+         * BELOW IS line by line notes of how asynchronous javasript works behind the scenes:
+         * 
+         *
+                const secondAsynch = () => {
+                    setTimeout(() => {
+                        console.log('two seconds (2000 miliseconds) have passed!!');
+                        
+                    },2000)            
+                }
+                const firstAsynch = () => {
+                    console.log('Hey There Asynch');
+                    secondAsynch();
+                    console.log('The End Asynch');
+                }
+                firstAsynch();
+
+                the code above is processed in this way:
+                
+                EXECUTION STACK
+
+                Global Execution Context
+                ------------------------
+                create Execution Context - first()
+                ------------------------
+                create Execution Context = console.log('Hey There Asynch');
+                ------------------------
+                remove Execution Context = console.log('Hey There Asynch'); is removed after execution
+                -------------------------
+                create Execution Context - second()
+                ------------------------
+                create Execution Context - setTimeout()
+
+                
+                NOTES: setTimeout function comes for the WEB APIs; see @webAPIs
+                       Timer will keep running in the javascript runtime
+
+                        >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+                        WEBAPIs STARTS KEEPING TRACK OF TIMER
+                        Timer starts and the callback function gets attached to the timer and the WEB APIs keeps track of it 
+                        >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+                -------------------------
+                remove Execution Context - setTimeout()
+                -------------------------
+                remove Execution Context - second()
+                -------------------------
+                create Execution Context - console.log('The End Asynch');
+                -------------------------
+                remove Execution Context = console.log('The End Asynch'); is removed after execution
+                -------------------------
+                remove Execution Context - first()
+                -------------------------
+                CODE HAS COMPLETED HOWEVER THE TIMER IS STILL RUNNING 
+                        >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+                        WEB API 
+                        Once the time has expired the callback function is added to the message queue
+                            =======================
+                            MESSAGE QUEUE
+                            once the callback function is in the message queue it waits until the EVENT LOOP adds it to the exectuion stack to be executed as soon as the exectuion stack is empty
+                                ---------------------
+                                EVENT LOOP
+                                Adds the function to the execution stack
+                                ----------------------
+                            =======================
+                        >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+                -------------------------
+                create Execution Context = timer callback
+                -------------------------
+                create Execution Context - console.log('two seconds (2000 miliseconds) have passed!!');
+                -------------------------
+                remove Execution Context - console.log('two seconds (2000 miliseconds) have passed!!'); is removed after exectuion
+                -------------------------
+                remove Execution Context = timer callback
+
+                ////////////// @webAPIs  WEB APIs //////
+                - Web APIs live outside the javasctript engine
+                - Web APIs houses things such as:
+                    - DOM manipulations
+                    - setTimout()
+                    - http requests
+                    - for ajax
+                    - Geo locations 
+                    - Tons more
+                - We have access to things in the Web APIs because they are also in the javascript runtime
+                - Web APIs keep track of things such as timers and event listeners. They hold any callback functions until the time has run out or an event has happened. After the time runs out or the event has happened the web api will move the function to the message queue where the function will wait to be executed once the exectution stack is empty
+                
+                - The Event Loop
+                    -- the event loop is resoponsible for ensuring the callback functions in the message queue are exectued.
+                    -- It constantly monitors the message queue and the exectuion stack
+                    -- It will push the first function in the message queue onto the execution stack as soon as the stack is empty
+                    -- event loop will continue pushing any remaining functions in the message queue onto the execution stack until all are processed
+
+        */
     </script>
+
+    <script>
+        /**
+         * ASYNCHRONOUS JAVASCRIPT WITH CALLBACKS - THE OLD WAY ES5
+         * Simulate ajax calls - loading data from a remote server using timers
+         * This also simulates callback hell code where there are too many nested setTimout functions.
+        */
+
+        // function getRecipe(){
+        //     //simulate ajax call - call to get data from server
+        //     setTimeout(()=> {
+
+        //         const recipeID = [523,883,565,325];
+        //         console.log(recipeID);
+        //         //after we recieve the id's from server we do something with the recipes
+        //         /*
+        //         setTimeout(firstArgIsFunction,TimeInMilliseconds,Element) can take a third argument example: setTimeout((thirdArgElementToProcess) => {
+        //             thirdArgElementToProcess.code();
+        //         },2100,element);
+        //         */
+                    
+        //         //first nested callback on a timer
+        //         setTimeout((id)=>{
+
+        //             const recipe = {title: 'Fresh tomotoe pasta', publisher: 'Leo'}
+        //             console.log(`${id}: ${recipe.title}`)
+                    
+        //             //second nested callback on a timer
+        //             setTimeout((publisher) =>{
+
+        //                 const recipe2 = {title: 'Italian Pizza', publisher: 'jonas'};
+        //                 console.log(recipe2);
+
+        //             },1500,recipe.publisher);
+
+        //         },1500,recipeID[2]);
+
+        //     },1500);
+        // }
+        // getRecipe();
+
+    </script>
+
+    <script>
+        /**
+         * 
+         * PROMISES - ES6
+         * FROM CALLBACK HELL TO PROMISES
+         * 
+         * PROMISE: 
+         *  - Object that keeps track of whether a certain event has happened or not; in this case event means and asynchronous event (data coming back from an ajax call, timer finishing);
+         *  - Determines what happens after the event has happened;
+         *  - Implements the concept of a future value that we're expecting
+         * 
+         * IN MY OWN WORDS: a promise is a piece of code that says I will go get this piece of information and once I get this data it will be available in this place.
+         * 
+         * Promises states:
+         * - Pending: before the event has happened
+         * - Settled/Resolved: once the event has happened
+         * - Fulfilled: once the result is availble
+         * - Rejected: means there was an error
+         * 
+         * We can produce and consume promises:
+         * Produce - we create a new promise and send the results using that promise
+         * Consume - we can callback functions for fullfilment of rejection of the promise
+         * 
+         * PROMISE OBJECTS can use then() and catch() methods
+         *      - then() allows to use an event handler for the case that the promise is fulfilled, then pass a callback function for what to do if the promise was succesful
+         *      - catch() allows us to add a handler in case the promise was rejectd and throw an error
+         * 
+         * 
+        */
+        
+        // promises are created using the new keyword and passing in what is known as the executor, this is a funciton that will be immediately called once the promise is created; the function passed in to the promise takes in two function arguments, resolve and reject; new Promise(functionImmediatelyCalled(resolve,reject))
+        // const getIDs = new Promise((resolve, reject) => {
+        //     setTimeout(() => {
+        //         //if the event is succesfull get the ids with the resolve function; resolve function marks the promise as fulfilled
+        //         //resolve() takes an argument; return the result the of the promise if it was succesful
+        //         resolve([523,883,565,325]);
+        //         //the reject method is used for returning whatever you need to return in case the promise is rejectd and marks the promise as rejected
+        //         reject("Error when retrieving data");
+
+        //     }, 1500);
+        // });
+
+        // const getRecipe = (recID) => {
+        //     return new Promise((resolve, reject) => {
+        //         setTimeout((id)=> {
+
+        //         const recipe = {
+        //             title: 'Fresh tomotoe pasta', 
+        //             publisher: 'Leo'
+        //         };
+
+        //         resolve(`${id}: ${recipe.title}`);
+
+        //         },1500,recID);
+                
+        //     });
+        // };
+
+
+        // const getRelated = publisher => {
+        //     return new Promise((resolve,reject) => {
+        //         //pub passed in as publisher to the setTimout method
+        //         setTimeout((pub) =>{
+        //         const recipe = {
+        //             title: 'Italian Pizza', 
+        //             publisher: 'Leo'
+        //         };
+
+        //         resolve(`${pub}: ${recipe.title}`);
+
+
+        //         },1500,publisher);
+        //     });
+        // };
+
+        
+        // //consume the the promise with a chain for then() and catch() methods
+        // //the callback function for the then method also accepts an argument which is the result of the succesful promise (name it whatever you want similiar to for each)
+        // getIDs
+        // .then((IDs) => {
+        //     console.log(IDs);
+        //     //consume other promises and stop the callback hell, return a new promise and add a .then() method right after this .then() method
+        //     return getRecipe(IDs[2]);
+        // })
+        // .then((recipe) => {
+        //     console.log(recipe);
+        //     return getRelated('Leo');
+        // })
+        // .then((recipe) => {
+        //     console.log(recipe);           
+        // })
+        // .catch((error) => {
+        //     console.log(error);         
+        // });
+    </script>
+
+<script>
+    /**
+     * 
+     * ASYNCH/AWAIT
+     * FROM PROMISES TO ASYNCH/AWAIT - ES8
+     * 
+     * THIS MAKES IT EASIER FOR DEVELOPERS TO CONSUME PROMISES
+     * - PRODUCING PROMISES IS STILL DONE THE WAY THAT IT WAS DONE IN ES6
+     * 
+     * For example of below see @consumingPromises
+     * - asynchrounous functions are created by adding async before declaring the funcion. Adding the async before hand just means it keeps running in the background.
+     * - async functions always return a promise
+     * - async await functions can consume one or more promises
+     * - await is used inside the async function to assign the promise to a new variable 
+     *  - await stops the code from executing until the promise is fulfilled
+     *  - if the promise is resolved the value of the promise is then assigned to the variable
+     *  - await expression can ONLY BE USED inside an async function
+     * 
+     * Returning promise from an async function will not work like you would think it works. Primarily becuase by the time that you want to do anyting with the return value from the async function the promise will still be pending so you would see Promise {<pending>} returned instead.
+     * 
+     * In order to use the value returned from an async function would be to use the then() method like we did in ES6
+     * 
+    */
+
+    //PRODUCING PROMISES
+    // const getIDs = new Promise((resolve, reject) => {
+    //         setTimeout(() => {
+    //             resolve([523,883,565,325]);
+    //             reject("Error when retrieving data");
+
+    //         }, 1500);
+    //     });
+
+    //     const getRecipe = (recID) => {
+    //         return new Promise((resolve, reject) => {
+    //             setTimeout((id)=> {
+
+    //             const recipe = {
+    //                 title: 'Fresh tomotoe pasta', 
+    //                 publisher: 'Leo'
+    //             };
+
+    //             resolve(`${id}: ${recipe.title}`);
+
+    //             },1500,recID);
+                
+    //         });
+    //     };
+
+
+    //     const getRelated = publisher => {
+    //         return new Promise((resolve,reject) => {
+    //             setTimeout((pub) =>{
+    //             const recipe = {
+    //                 title: 'Italian Pizza', 
+    //                 publisher: 'Leo'
+    //             };
+
+    //             resolve(`${pub}: ${recipe.title}`);
+
+
+    //             },1500,publisher);
+    //         });
+    //     };
+
+    //     //CONSUMING PROMISES - ES8; @consumingPromises
+    //     //start the async function
+    //     async function getRecipesAW(){
+    //         //assign the promise result to a variable using await before the promise; will assign if promie is resolved
+    //         //await will make the rest of the code within the function not run until the promise is returned; code outside of the async function will continue it's synchronous way
+    //         const ids = await getIDs;
+    //         console.log(ids);
+    //         const recipe = await getRecipe(ids[2]);
+    //         console.log(recipe);
+    //         const related = await getRelated('Leo');
+    //         console.log(related); 
+            
+    //         //attempt to return recipe from function
+    //         return recipe;
+    //     };
+
+    //     //this will not work because the async function would not have completed by the time the code gets to this point
+    //     // const rec = getRecipesAW();
+    //     // console.log(rec);
+
+    //     //Proper way to assign a return from an async function is using the then() method
+    //     getRecipesAW().then((result) => {
+    //             console.log(result);              
+    //         }
+    //     );
+        
+    //     //console.log('hello');
+
+</script>
+
+<script>
+    /**
+     * AJAX AND APIS
+     * 
+     * AJAX - ASYNCHROUNOUS JAVASCRIPT AND XML
+     * - ALLOWS US TO ASYNCRHRONOUSLY COMMUNICATE WITH REMOTE SERVERS
+     * 
+     * EXAMPLE - we have an app running in the client(browser) and we want to get data from a server without having to reload entire page. 
+     * - send an http request (get,post, etc.) to remote server (API)
+     * - server (API) will send the response back
+     * - this will happen asynchronously in the background
+     * - this also works to send data to the server
+     * 
+     * API - APPLICATION PROGRAMMING INTERFACE
+     * - SOFTWARE THAT CAN BE USED BY ANOTHER PIECE OF SOFTWARE TO ALLOW APPLICATIONS TO TALK TO EACH OTHER
+     * 
+     * API IN REFERENCE TO AJAX AND WEBDEVELOPMENT 
+     * - THE API IS NOT THE SERVER ITSELF BUT A PART OF THE SERVER; LIKE AN APPLICATION THAT RECIEVES REQUESTS AND SENDS BACK RESPONSES.
+     * 
+     * JAVASCRIPT APIs
+     * - build your own API for data coming from your own server
+     * - 3rd party APIs
+     *
+     * 
+     * MAKING AJAX CALLS WITH FETCH AND PROMISES
+     * 
+     * fetch()
+     * - fetch will return a promise that we can then consume
+     * - when using the fetch method the "endpoint" is the url for what api you want to pull in
+     * - once fetch returns the results (response object) you're really only interested in the body which will show as 'readableStream' in the console if logged
+     * - readableStream means we first have to process the response; in the case below we have to convert it from JSON to javascript; use the json() method to convert.
+     * -json() method returns a promise so you can chain it to the fetch method or anywhere to read the results; it can take sometime so doing it this way will convert it asynchronously in the background
+     * 
+     * ----------------------------------------------------------------------
+     *  Same Origin policy - prevents making ajax requests to domains different than our own domain;
+     * 
+     * Cross Origin Resource Sharing (CORS) - developers of API need to implement this on their own apis;
+     * 
+     * When the api that you want to use did not implement CORS you can proxy or channel the request through own server
+     * 
+     * for this example we will use https://cors-anywhere.herokuapp.co
+    */
+
+    //fetch an api using a proxy server for an api that has no CORS
+    // function getWeather(woeid){
+    //     fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/${woeid}/`)
+    //     //fetch returns a promise and can use that in a then() method
+    //     .then( result => {
+    //         //the result is a response object
+    //         console.log(result);
+    //         //turn the body of the result into a javascript object by using json() method; which returns a promise
+    //         return result.json();     
+    //     })
+    //     //handle the json promise
+    //     .then(data => {
+    //         //console.log(data);
+    //         const today = data.consolidated_weather[0];
+    //         console.log(`Temperature in ${data.title} stay between ${today.min_temp} and ${today.max_temp}`);
+            
+    //     })
+    //     //catch any errors
+    //     .catch( error => {
+    //         console.log(error);
+            
+    //     })
+    // };
+
+    // getWeather(2487956);
+</script>
+<script>
+    /**
+     * AJAX CALLS WITH FETCH AND ASYNC/AWAIT
+     * 
+     * making ajax calls with async/await is really easy simply follow the same steps of assigning the results of an await function, function that returns a promise
+     * 
+     * Catching errors with async await:
+     * - cannot use .catch() method
+     * - need to use try and catch statements
+     * - try: will try and run the code
+     * - catch: if error is caugh error will be sent to this block
+     * 
+    */
+    
+    async function getWeatherAW(woeid){
+        try{
+            //fetch api and assign promise to variable
+            const result = await fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/${woeid}/`);
+            console.log(result);
+            //turn json readable stream into javascript
+            const data = await result.json();
+            console.log(data);
+            const tomorrow = data.consolidated_weather[1];
+            console.log(`Temperature tomorrow in ${data.title} will stay between ${tomorrow.min_temp} and ${tomorrow.max_temp}`);
+            //return the data; remember this is a promise and cannot be assigned to a variable this needs to have the then() method after the variable
+            return data;
+        } catch(error) {
+            alert(error);
+        }
+        
+    };
+
+    getWeatherAW(2487956);
+    let londonWeather;
+    //in order to act with the return of an async function needs to be interacted with using the then() method
+    getWeatherAW(44418).then(data => {
+        londonWeather = data
+        console.log(londonWeather);
+    });
+    
+</script>
+
 </body>
 </html>
