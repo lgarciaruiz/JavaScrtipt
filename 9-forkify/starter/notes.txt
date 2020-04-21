@@ -1,0 +1,45 @@
+************** MODERN JAVASCRIPT ********************
+NODE.js and NPM are 3rd party packages where you can find libraries/frameworks and Development tools
+
+NPM - Node package manager, command line interface, and write scripts to automatically set up packages
+
+Babel - converts ES6/ESNext to ES5
+converting is done so that javascript works in all browsers
+
+webpack - module bundler, used to be able to use modules it will bundle modules together into a single file so that modules from ES6 work in all browsers
+
+
+**************** COMMAND LINE **********************
+- Main concept of the command line is that you're always in a folder
+- check contents of folder
+    - windows: dir
+    - mac: ls
+- change directory
+    - cd folderName (hitting tab after you type first letter will autofill a folder)
+- moving up a folder 
+    - cd ..
+- clearing command prompt 
+    - windows: cls
+    - mac: clear
+- create a folder 
+    - mkdir folderName
+- create new file 
+    - windows: copy NUL fileName
+    - mac: touch nameFile
+- copy file 
+    - windows: copy fileNameToCopy folderNameToCopyTo
+    - mac: cp fileNameToCopy folderNameToCopyTo
+- move file
+    - windows: move fileToMove folderToMoveTo
+    - mac: mv fileNameToCopy folderNameToCopyTo
+- delete a file (REMOVES FROM HARDRIVE)
+    - windows: del nameOfFile
+    - mac: rm nameOfFile
+- delete folder and everything in it
+    - windows: rmdir /S folderName
+    - mac: rm -r folderName
+- open files
+    - windows: start fileName
+    - mac: open fileName
+
+    ****************
