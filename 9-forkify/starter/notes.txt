@@ -42,4 +42,29 @@ webpack - module bundler, used to be able to use modules it will bundle modules 
     - windows: start fileName
     - mac: open fileName
 
-    ****************
+
+    ***********MODEL-VIEW-CONTROLLER ARCHITECTURE (MVC)****************
+    Advantage
+    - it decouples the presentation logic with the application logic with a controller in between them which controlls the entire app
+
+    Implementing MVC for forkify
+    - Controller 
+        > index.js
+        > recipe.js
+        > List.js
+        > likes.js
+        - connects Model and View
+    - Model > Search.js 
+        - ajax calls for search queries
+        - data and app logic
+    - View 
+        > searchView.js
+        > recipeView.js
+        > listView.js
+        > likesView.js
+        - get the user input and print the results of search
+        - gets and displays data from and to the UI
+
+************* FIRST LECTURE **********************
+* HOW TO USE ES6 MODULES
+* DEFAULT AND NAMED EXPORTS AND IMPORTS
