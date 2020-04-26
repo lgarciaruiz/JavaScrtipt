@@ -68,3 +68,83 @@ webpack - module bundler, used to be able to use modules it will bundle modules 
 ************* FIRST LECTURE **********************
 * HOW TO USE ES6 MODULES
 * DEFAULT AND NAMED EXPORTS AND IMPORTS
+
+When creating module files or modules, convention dictates that name should begin with capital letter. 
+
+The index.js will act as the controller that will connect view and models modules.
+
+Importing and exporting from Modules:
+
+DEFAULT: is an keyword for exporting ONE thing from a module;
+- code example: export default 'string' or num or anything; 
+
+IMPORTS: is a keyword for importing something from another module;
+- code exmaple: import varName from './folder/filename'; 
+    - in the above example the . means current directory after that just pass in the path to the file. When importing there is no need to specify that the file is .js
+
+Exporting many things uses variable names:
+- code examples: 
+    -export const varName (param) => functionCode;
+    -export const varName2 = number;
+
+Importing many things; use the exact same name given in the exporting file:
+- import {varName, varName2} from './folder/filename';
+    - the name of the imported variables can be changed;
+        - import {varName as newName, varName2 as newName2} from './folder/filename';
+
+Importing everything from a module
+- code example: import * as varModuleName from './folder/filename';
+    - this means that when using the variables they will have to be prepended by the name of the variable name.
+        - varModuleName.varName would allow you to use this.
+
+
+
+************** API CALLS *************************
+
+API key: is like a password that is unique for everyone. This is used to make requests and the key can be used to track how many requests someone makes per day.
+
+REMEMBER fetch() Does not work in all browsers yet! Instead use Axios a library that works in all browsers and automatically returns json! Can be installed with npm.
+- This library needs to be imported to the js file you'll be using it similar to modules.
+    - code example: import pacakgeVarName from 'packageNameNoPathNeeded';
+
+Once axios is installed use it the same way you would fetch: axios()
+
+Example code for api call:
+
+import axios form 'axios';
+
+async function getResults(query){
+    const key = 'getKeyForAPI';
+    //wrap it in try catch for error handling
+    try{
+        //using template literal below; look at api documentation for how to use the url, key and other keywords
+        const result = await axios(`http://apiurl.com/api/search?key=${key}&q=${query}`);
+        console.log(result)
+    } catch (error){
+        alert(error)
+    }
+}
+
+getResults('pizza');
+
+
+***  APPLICATION STATE & IMPLEMENTING STATE ***
+
+Simple way of keeping track of the state of the app to correctly render UI; in this case we used a constant object named state
+
+
+**** BUILDING THE SEARCH VIEW MODULE PART 1 *****
+
+-To keep thing neatly bundled we create a file for the DOM elements named base.js
+    - we export this module and import it anywhere we need access to the DOM elements.
+    - exporting of the elemtns is done with an object to keep them all in a neatly packaged object
+
+
+ **** IMPLEMENTING SEARCH RESULTS PAGINATION *****
+ -.closest() method for easier event handling
+ - How and why to use data-* attributes in html5
+
+ closest() method recieved a string param i.e class/id of an element and it will traverse up the DOM tree to find the first element containing that string. this is useful when trying to traverse select a parent element; see @closest in index.js
+
+ data- attributes can have any name example data-nameHere and set it equal to any string value (string can be parsed to int); this info can then be used with element.dataset.nameOfDataHere to move through pages for example see @data in index.js
+
