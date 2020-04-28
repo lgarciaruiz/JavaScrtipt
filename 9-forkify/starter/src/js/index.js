@@ -3,6 +3,7 @@ import Search from './models/Search';
 //all (*) will be imported as an object with name searchView
 import * as searchView from './views/searchView';
 import { elements, renderLoader, clearLoader } from './views/base';
+import Recipe from './models/Recipe'
 
 /** Global state of the app
  * - Search object
@@ -12,11 +13,12 @@ import { elements, renderLoader, clearLoader } from './views/base';
  */
 const state = {};
 
+/** SEARCH CONTROLLER */
 //async/await function
 const controlSearch = async () => {
     // 1 get Query from view
     const query = searchView.getInput(); 
-    console.log(query);
+    //console.log(query);
     
     
     //when new query comes in; check if truthy
@@ -29,13 +31,19 @@ const controlSearch = async () => {
         searchView.clearResults();
         renderLoader(elements.searchResults);
         
-        // 4 get recipes using the saved search in state
-        await state.search.getResults();
-
-        // 5 render recipes result on UI
-        clearLoader(elements.searchResults);
-        searchView.renderResults(state.search.recipes);
-        
+        try{
+            // 4 get recipes using the saved search in state
+            await state.search.getResults();
+    
+            // 5 render recipes result on UI
+            clearLoader(elements.searchResults);
+            searchView.renderResults(state.search.recipes);    
+        }
+        catch (error){
+            alert('something went wrong with the search');
+            console.log(error);
+            clearLoader();
+        }
     }
 
 }
@@ -63,3 +71,45 @@ elements.searchResutsPages.addEventListener('click', e => {
         searchView.renderResults(state.search.recipes, goToPage); 
     }    
 })
+
+
+/** RECIPE CONTROLLER */
+
+const controlRecipe = async () => {
+    //get hash from window.location (URL)
+    const id = window.location.hash.replace('#','');
+    console.log(id);
+    
+    //check if we have ID
+    if (id){
+        //prepare UI for changes
+
+
+        //create new recipe object
+        state.recipe = new Recipe(id);
+
+        //get recipe data
+        try{
+            
+            await state.recipe.getRecipe();
+    
+            //calculate servings and time
+            state.recipe.calcTime();
+            state.recipe.calcServings();
+    
+            //render recipe
+            console.log(state.recipe);
+        }
+        catch (error) {
+            console.log(error);
+            alert('Error processing recipe!')
+        }
+        
+    }
+}
+
+//adding multiple events to for the same function can be done with a forEach loop if the events are in an array
+// window.addEventListener('hashchange',controlRecipe);
+// window.addEventListener('load', controlRecipe);
+
+['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));

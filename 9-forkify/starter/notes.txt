@@ -148,3 +148,33 @@ Simple way of keeping track of the state of the app to correctly render UI; in t
 
  data- attributes can have any name example data-nameHere and set it equal to any string value (string can be parsed to int); this info can then be used with element.dataset.nameOfDataHere to move through pages for example see @data in index.js
 
+**** IMPLEMENTING RECIPE MODEL ****
+- for this exercise we create a config.js folder to keep the key and proxy variables. NOTE: IN A REAL APP THIS SHOULD NEVER BE THE CASE. THESE SHOULD BE PRIVATE AND NEVER STORED ON THE CLIENTSIDE!!
+
+- Ideally Calls to keys should be done on own server and set up own api to the server where you do the calls using the key.
+
+*** BUILDING THE RECIPE CONTROLLER ***
+- How to read data fromr the page URL;
+- How to responsod to the hashchange event;
+- how to add the same event listener to multiple events;
+
+HASHCHANGE 
+- an event for when the URL changes after the pound symbol #. 
+    - for example www.someurl.com/#hash1 changes to www.someurl.com/#hash2
+- the event is added to the window object
+
+The hash can be retrieved from window.location.hash; window.location is the entire url
+
+- load event fires when the page is loaded; happens on the window object;
+
+
+MULTIPLE EVENTS TO SAME EVENTLISTENER
+- adding multiple events to for the same function can be done with a forEach loop if the events are in an array
+
+example 
+replace:
+window.addEventListener('hashchange',controlRecipe);
+window.addEventListener('load', controlRecipe);
+
+with:
+['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));

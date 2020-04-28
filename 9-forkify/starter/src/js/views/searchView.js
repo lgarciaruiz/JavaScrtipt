@@ -1,5 +1,3 @@
-//use this instead const res = await axios(`https://forkify-api.herokuapp.com/api/get?rId=${this.id}`);
-
 import { elements, elementStrings } from './base';
 
 //function to clear search bar
@@ -45,7 +43,7 @@ const renderRecipe = (recipe) => {
     //create markup to show using template literall replacing dynamic content with recipe object info
     const markup = `
         <li>
-            <a class="results__link" href="${recipe.recipe_id}">
+            <a class="results__link" href="#${recipe.recipe_id}">
                 <figure class="results__fig">
                     <img src="${recipe.image_url}" alt="${limitRecipeTitle(recipe.title)}">
                 </figure>

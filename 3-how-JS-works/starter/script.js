@@ -206,7 +206,7 @@ var john = {
     calculateAge: function(){
         console.log(this);
         console.log(2020-this.yearOfBirth);
-        //the this keyword here points to the object in this method once the method is called, this is being caled below on line 213
+        //the this keyword here points to the object in this method once the method is called, this is being called below on line 213
 
         // function innerFunction(){
         //     console.log(this);
