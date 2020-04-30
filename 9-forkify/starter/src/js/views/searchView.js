@@ -13,6 +13,19 @@ export const clearResults = () => {
     elements.searchResutsPages.innerHTML = '';
 };
 
+export const highlightSelected = id => {
+    //create an array of all the elements with results__link class
+    const resultsArr = Array.from(document.querySelectorAll('.results__link'));
+
+    //remove active class from all
+    resultsArr.forEach(el => {
+        el.classList.remove('results__link--active');
+    });
+    
+    //adding a new class to all a tags that have an href attribute with the given id
+    document.querySelector(`a[href="#${id}"]`).classList.add('results__link--active');
+};
+
 //returns search input from user
 export const getInput = () => elements.searchInput.value;
 

@@ -5,6 +5,7 @@ export const elements = {
     searchResultList: document.querySelector('.results__list'),
     searchResults: document.querySelector('.results'),
     searchResutsPages: document.querySelector('.results__pages'),
+    recipe: document.querySelector('.recipe')
 };
 
 //DOM string elements ie classes/ids

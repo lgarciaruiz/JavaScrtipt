@@ -178,3 +178,13 @@ window.addEventListener('load', controlRecipe);
 
 with:
 ['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
+
+
+************ RECIPE MODEL PART 2 ************
+-Use array methods like map, slice, findIndex and includes;
+-How and why to use eval();
+
+When testing and you don't have access to an object/variable or anything else simple create a variable in the window object (global ojbect) where you'll have access to it
+    - example window.var = objectYouWantAccessTo;
+
+-eval() method will evaluate a string as javascript code and return what the evaluation returns

@@ -2,6 +2,7 @@
 import Search from './models/Search';
 //all (*) will be imported as an object with name searchView
 import * as searchView from './views/searchView';
+import * as recipeView from './views/recipeView';
 import { elements, renderLoader, clearLoader } from './views/base';
 import Recipe from './models/Recipe'
 
@@ -82,23 +83,31 @@ const controlRecipe = async () => {
     
     //check if we have ID
     if (id){
-        //prepare UI for changes
+        //prepare UI for changes             
+        recipeView.clearRecipe();
+        renderLoader(elements.recipe);
 
+        //highlight selected
+        if (state.search){
+            searchView.highlightSelected(id);
+        } 
 
         //create new recipe object
         state.recipe = new Recipe(id);
 
         //get recipe data
         try{
-            
+
             await state.recipe.getRecipe();
+            state.recipe.parseIngredients();
     
             //calculate servings and time
             state.recipe.calcTime();
             state.recipe.calcServings();
     
             //render recipe
-            console.log(state.recipe);
+            clearLoader();
+            recipeView.renderRecipe(state.recipe);
         }
         catch (error) {
             console.log(error);
@@ -112,4 +121,5 @@ const controlRecipe = async () => {
 // window.addEventListener('hashchange',controlRecipe);
 // window.addEventListener('load', controlRecipe);
 
+//when the screen loads or the hashchanges the recipe controller will be called
 ['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
