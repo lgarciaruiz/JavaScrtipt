@@ -7,19 +7,21 @@ const formatCount = (count) => {
         //example 2.5 --> 2 1/2
         //example 0.5 --> 1/2
         
+        //round only returns ints, get around by multiplying by 1+num of decimals needed then divide by same amount
+        const newCount = Math.round(count * 10000) / 10000;
         //create two new variables using desctructuring: int, dec by splitting the number at the decimal
-        const [int, dec] = count.toString().split('.').map(el => parseInt(el,10));
+        const [int, dec] = newCount.toString().split('.').map(el => parseInt(el,10));
 
         //if no decimal return the count
-        if (!dec) return count;
+        if (!dec) return newCount;
 
         //if int = 0 create the fraction based on the count 
         if (int === 0){
-            const fr = new Fraction(count);
+            const fr = new Fraction(newCount);
             return `${fr.numerator}/${fr.denominator}`;
         } else {
             //when int is not 0 create fraction based on count minus the int
-            const fr = new Fraction(count - int);
+            const fr = new Fraction(newCount - int);
             return `${int} ${fr.numerator}/${fr.denominator}`
         }
     }
@@ -41,7 +43,7 @@ const createIngredient = (ingredient) =>{
     `
 };
 
-export const renderRecipe = (recipe) => {
+export const renderRecipe = (recipe, isLiked) => {
     const markup = `
             <figure class="recipe__fig">
                 <img src="${recipe.img}" alt="${recipe.title}" class="recipe__img">
@@ -66,12 +68,12 @@ export const renderRecipe = (recipe) => {
                     <span class="recipe__info-text"> servings</span>
 
                     <div class="recipe__info-buttons">
-                        <button class="btn-tiny">
+                        <button class="btn-tiny btn-decrease">
                             <svg>
                                 <use href="img/icons.svg#icon-circle-with-minus"></use>
                             </svg>
                         </button>
-                        <button class="btn-tiny">
+                        <button class="btn-tiny btn-increase">
                             <svg>
                                 <use href="img/icons.svg#icon-circle-with-plus"></use>
                             </svg>
@@ -81,7 +83,7 @@ export const renderRecipe = (recipe) => {
                 </div>
                 <button class="recipe__love">
                     <svg class="header__likes">
-                        <use href="img/icons.svg#icon-heart-outlined"></use>
+                        <use href="img/icons.svg#icon-heart${isLiked ? '' : '-outlined'}"></use>
                     </svg>
                 </button>
             </div>
@@ -93,7 +95,7 @@ export const renderRecipe = (recipe) => {
                     ${recipe.ingredients.map(el => createIngredient(el)).join(' ')}
                 </ul>
 
-                <button class="btn-small recipe__btn">
+                <button class="btn-small recipe__btn recipe__btn--add">
                     <svg class="search__icon">
                         <use href="img/icons.svg#icon-shopping-cart"></use>
                     </svg>
@@ -121,4 +123,16 @@ export const renderRecipe = (recipe) => {
 
 export const clearRecipe = () => {
     elements.recipe.innerHTML = '';
+};
+
+export const updateServingsIngredients = (recipe) => {
+    //update servings using textContent to change content of html only
+    document.querySelector('.recipe__info-data--people').textContent = recipe.servings;
+
+    //update ingredients; save html dom elements into an array
+    const countElements = Array.from(document.querySelectorAll('.recipe__count'));
+    //loop over all existing elements and change the content to the updated count of ingredients
+    countElements.forEach((el,i)=>{
+        el.textContent = formatCount(recipe.ingredients[i].count);
+    });
 };

@@ -23,14 +23,14 @@ export const highlightSelected = id => {
     });
     
     //adding a new class to all a tags that have an href attribute with the given id
-    document.querySelector(`a[href="#${id}"]`).classList.add('results__link--active');
+    document.querySelector(`.results__link[href="#${id}"]`).classList.add('results__link--active');
 };
 
 //returns search input from user
 export const getInput = () => elements.searchInput.value;
 
 //returns shortened title preset to 17 chars
-const limitRecipeTitle = (title, limit = 18) => {
+export const limitRecipeTitle = (title, limit = 18) => {
     //new title array
     const newTitle = [];
     //if title is too long

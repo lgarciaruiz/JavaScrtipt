@@ -188,3 +188,61 @@ When testing and you don't have access to an object/variable or anything else si
     - example window.var = objectYouWantAccessTo;
 
 -eval() method will evaluate a string as javascript code and return what the evaluation returns
+
+
+****** UPDATING RECIPE SERVINGS *****
+-ANOTHER WAY OF IMPLEMENTING EVENT DELEGATIONS USING .match
+match can be used when an element is not yet in the DOM; using .match() is similar to queryselector in that you pass in a class/id/element to see if it matches, when the event fires up the DOM until it finds the parent element it will then look to see if the target element, element that started the bubblig, matches the class passed in, example below:
+
+document.queyrSelctor('.parentClassHere').addEventListener('eventTypeHere',event => {
+ (event.target.matches('.btn-decrease, .btn-decrease *'))
+})
+
+
+******* BUILDING THE SHOPPING LIST MODEL ******
+reminder model is basically the same thing as a class
+-imported a new package using npm called uniqid that generates unique ids
+-
+
+
+***** PERSISTING LIKE DATA ******
+-localStorage api
+-web storage api allows to save key, value pairs right in the browser and data will stay in tact even after page downloads
+-localStorage lives in the global object (window object) and so you have access to it everywhere
+
+methods available:
+localStorage.setItem(key,value): sets data
+localStorage.getItem(key): returns data or null if no key exists
+localStorage(): returns all localStorage info
+localStorage.length
+localStorage.removeItem(key): removes item from storage
+
+localStorage only allows storing strings; Use JSON.stringify to convert an array to a string.
+
+In this case we convert our likes array into a string
+
+to retrieve the data from local storage use getItem; this will return a string because it saved a string. So use JSON.parse(localStorage.getItem('keyString')); and it will parse it back to the data object it was
+
+
+***** Testing code used in app deve ****
+
+// //TESTING CODE STARTS
+// //making state availiable for testing
+// window.state = state;
+// state.likes = new Likes();
+// likesView.toggleLikeMenu(state.likes.getNumLiked());
+
+// //TESING END
+
+
+
+**** IDEAS FOR EXTENDING THIS PROJECT ****
+- button to delete all shopping list items
+- mannually add items to shoppping list
+- save shopping list data in local storage
+- improve the ingredient parsing algorithm
+- calculate amount of SERVINGS
+- imporve error handling
+
+
+KEEEP CODING ON MY OWN TO LEARN MORE

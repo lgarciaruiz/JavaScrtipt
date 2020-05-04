@@ -15,6 +15,6 @@ Examples: clicking a button, resizing a window, scrolling down or pressing a key
 
 Event Listeners: a function that performs an action based on a certain event. It waits for a specific event to happen.
 
-* Events are processed only after the execution stack is empty meaning all functions have completed (returened).
+* Events are processed only after the execution stack is empty meaning all functions have completed (returned).
 * The message queue is something else that lives in the javascript engine
 * When an event happens and the message is recieved it gets it's own execution context becuase it is a function and this execution context then gets placed on the execution stack

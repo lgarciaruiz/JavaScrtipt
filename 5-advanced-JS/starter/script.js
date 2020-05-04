@@ -290,7 +290,8 @@ MOST POPULAR WAY IS THE FUNCTION CONSTRUCTOR
 
 /** /\\/\\///\/\/\/\/\ CLOSURES //\/\\/\/\\/\\/\/\\*/
 
-/**An inner function always has access to the variables and parameters of its outer functoin, even after the outer function has returned and it's execution context removed from the stack; the variable the you assing the function to, will retain all the variables (enclose them), this is closures*/
+/**An inner function always has access to the variables and parameters of its outer function, even after the outer function has returned and it's execution context removed from the stack; the variable the you assing the function to, will retain all the variables (enclose them), this is closures*/ 
+//this does not work for annonymous functions
 
 // function retirement(retirementAge){
 //     var a = ' years left until retirement.';

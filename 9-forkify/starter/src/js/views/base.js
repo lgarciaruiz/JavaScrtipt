@@ -5,7 +5,10 @@ export const elements = {
     searchResultList: document.querySelector('.results__list'),
     searchResults: document.querySelector('.results'),
     searchResutsPages: document.querySelector('.results__pages'),
-    recipe: document.querySelector('.recipe')
+    recipe: document.querySelector('.recipe'),
+    shopping: document.querySelector('.shopping__list'),
+    likesMenu: document.querySelector('.likes__field'),
+    likesList: document.querySelector('.likes__list'),
 };
 
 //DOM string elements ie classes/ids
