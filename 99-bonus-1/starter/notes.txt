@@ -1,0 +1,80 @@
+***** NODE JS Crash Course *****
+-Node.js is a javascript runtime built on google's open source v8 javascript engine.
+    - Remember javascript run time is just the browser.
+    - Node.js is a container, an environment, where javascript can be executed outside of any browser.
+
+-V8 engine is what executes the code and what parses the code.
+
+- All this allows us to be able to use node.js as a web server and javascript on the serverside of the web development; and power the back-end of applications
+
+-node comes with a very powerful module system and most of the functionaly is always in one of the packages;
+
+-reading a file requires the filesystem module; fs; this is a node core module.
+    - reading a file uses fs.readFileSync();
+    - you need to pass in the full path; use the variable __dirname which is the folder in which you are, followed by the folder and the file itself
+    - you also need to pass in utf-8 so that it does not return a buffer
+        example const json = fs.readFile(`${__dirname}/data/data.json`, 'utf-8');
+
+
+API's usually work with JSON nowadays at least traditional rest apis
+
+-NODE was really intended to create web servers
+-NODE sometimes has an asynchronous and a synchronous version of the same method; use the correct one for your intended behaviour
+    -synchronous functions will always be blocking and make the code stop; this will make the thread stop for all the users accessing the code because node.js runs on a single thread regardless of the amount of users using your code; SO ALWAYS TRY TO USE THE asynchronous functions
+
+-Creating a server is done by requiring the http package in node
+- creating a server is done with the http.createServer() method which takes in the request and response objects in a callback function
+-always write to head before sending the response
+    res.writeHead(numberOfStatus, {'Content-type':'text/html'})
+-sending the response is done with end  
+    res.end(responseHere)
+
+After creating the server set it to listen for any traffic
+server.listen(portNumber,'ipAddress', (callback) => {
+    code for when someone accesses the server
+})
+
+
+** NODE JS does not serve any files by default; every URL is like a route; For example an image file source /folder/image.png is a URL request; On a NODE JS file the concept of folders does not exist
+-you can see this illustrated when you log the pathName for a page that has images; you will see multiple paths
+
+- this means that in order to use images you need to route the url for the image to a request
+
+
+*** ROUTING *****
+-Routing respond in different ways for different URLs
+-without routing, it would not matter what url you have it will always go back to the same page with the same response
+
+-routing requires the package url 
+-routing is done in the createServer callback function because this is where you check the request
+-use url.parse(req.url,true)
+    -true makes it so that when it's parsed it returns an objects
+    -you can log this and see all of the properties this object has
+-use url.parse(req.url,true).pathname; to get the path name of a url
+-the pathname is used to check what request was sent to the server to redirect to the correct page
+-url can also be used to check other things among them the query property to check the id of the search
+ - for example if a url has url/products?id=4 the query string property would return the object that includes the id
+    -it will also parse into an object any other property of the query string that are separated by &=. for example url/prod?id=4&name=apple&time=now would be parsed into an object with the properties id, name, time and values of 4, apple, now; this is also useful to redirect pages correctly
+
+
+ROUTING CAN BE VERY COMPLICATED AND CAN BE 100s OF ROUTING CODE LINES
+most people use routing express to make it easier to implement routing
+
+*** TEMPLATING ****
+-create html templates of the page you want to reuse where the dynamic data will be replaced;
+    -the dynamic data should always use strings that are not likely to be used elsewhere so they should be wrapped around uniqe chars, for example ${%DYNAMICDATANAME%}
+
+
+**** WORKING WITH THE TERMINAL FOR NODE ****
+- you can use the terminal in vs code to run node 
+- typing node starts a node session and the terminal begins to work as if it were a browser console
+- ctrl c stops that process
+- typing node fileName will run the file as long as js code is with in it. this will run the code on the terminal and log info it has to. after that it will terminate and the cmd line will go back to a command prompt window
+
+NODEMON is a package you can install that with npm nodemon -g (g is for global): nodemon will automatically figure out what file you want to run on the terminal and do it for you;
+
+-nodemon will then keep running the file everytime you save
+
+
+**** THE LAPTOP STORE PART 1 with node.js *****
+
